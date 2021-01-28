@@ -1,19 +1,21 @@
 ﻿const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: {
-        main: './src/index.js'
+        app: './src/app.js'
     },
     output:{
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].[hash].js'
     },
     plugins:[
-        new HtmlWebpackPlugin({
-            template: './src/index.html'
-        }),
+        //используется для отчистки папки dist
         new CleanWebpackPlugin(),
+        //используется для работы с html
+        new HTMLWebpackPlugin({
+            template: './src/index.html'
+        })
     ]
 }

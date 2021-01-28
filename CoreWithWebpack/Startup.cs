@@ -29,17 +29,21 @@ namespace CoreWithWebpack
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseWebpackDevMiddleware();
             }
+
             app.UseStaticFiles();
 
-            if (!env.IsDevelopment())
+/*            if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
-            }
+            }*/
 
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
+
+                
             });
         }
     }
