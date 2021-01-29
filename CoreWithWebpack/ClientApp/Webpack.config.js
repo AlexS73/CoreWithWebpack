@@ -2,7 +2,14 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+console.log("Using NODE_ENV = " + process.env.NODE_ENV);
+
+const webpackDevServerPort = 8083;
+const proxyTarget = "http://localhost:4000";
+
 module.exports = {
+    mode: isDevelopment ? 'development' : 'production',
     entry: {
         app: './src/app.js'
     },
@@ -15,7 +22,19 @@ module.exports = {
         new CleanWebpackPlugin(),
         //используется для работы с html
         new HTMLWebpackPlugin({
-            template: './src/index.html'
+            template: './src/index.html',
+            filename: 'index.html'
         })
-    ]
+    ],
+    devServer: {
+        compress: true,
+        proxy: {
+            '/api': {
+                target: proxyTarget
+            }
+        },
+        port: webpackDevServerPort
+    },
+
+
 }

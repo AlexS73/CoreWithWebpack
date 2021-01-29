@@ -7,43 +7,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace CoreWithWebpack
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddSpaStaticFiles(conf =>
-           {
-               conf.RootPath = "ClientApp/dist";
-           });
+            services.AddControllers();
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseWebpackDevMiddleware();
             }
 
-            app.UseStaticFiles();
+            //app.UseDefaultFiles();
+            //app.UseStaticFiles();
 
-/*            if (!env.IsDevelopment())
+            
+
+           
+
+
+            app.UseRouting();
+            
+            app.UseEndpoints(endpoints =>
             {
-                app.UseSpaStaticFiles();
-            }*/
+                endpoints.MapControllers(); // подключаем маршрутизацию на контроллеры
+            });
 
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
-
                 
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:8083");
+                }
             });
         }
     }
